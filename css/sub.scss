@@ -1,0 +1,1331 @@
+@charset "utf-8";
+@import url('../css/reset.css');
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+$scroll-height: 100vh; // 섹션의 총 스크롤 길이 (전환 효과가 일어나는 높이)
+$text-width: 80%;
+$text-padding: 3rem;
+$transition-speed: 0.4s; // JavaScript 없이 상태 전환 시 사용
+
+
+
+body,
+html {
+    font-size: 62.5%;
+    /* 10px */
+
+}
+
+#wrap {
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    background: #F1F2EC;
+    max-width: 192rem;
+
+}
+
+.header {
+    width: 100%;
+    height: 10rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: top 0.7s ease;
+    background: #F1F2EC;
+    border: 0.1rem solid #a7a66d54;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    z-index: 10000;
+
+    &.active {
+        top: -10rem;
+        opacity: 0;
+    }
+
+    .inner {
+        width: calc(100% - 4rem);
+        height: 10rem;
+        background-color: #F1F2EC;
+        padding: 0 3rem;
+        display: flex;
+        justify-content: space-between;
+
+        margin: 0 auto;
+        text-align: center;
+
+        .menu-toggle {
+            display: none;
+        }
+
+        .logo {
+            width: 15rem;
+            height: 3.2rem;
+            line-height: 10rem;
+            align-items: center;
+            padding: 1rem;
+
+
+            a {
+                display: inline-block;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    display: block;
+                }
+
+            }
+        }
+
+
+        .nav {
+            display: flex;
+            gap: 8rem;
+            align-items: center;
+            height: auto;
+            color: #1a1a1a;
+
+
+            .depth-01 {
+                display: flex;
+
+                font-size: 2rem;
+
+                &:nth-child(3) {
+                    color: #00AAE7;
+                    font-weight: bold;
+                }
+
+
+                >a {
+                    display: block;
+                    line-height: 10rem;
+
+
+                    &:hover {
+                        color: #00AAE7;
+                        font-weight: bold;
+
+                    }
+
+                }
+
+                &:hover {
+
+
+
+                    .depth-02 {
+                        display: none;
+
+                    }
+
+
+                }
+
+
+
+                .depth-02 {
+                    display: none;
+                    /* 기본 숨김 */
+                    position: absolute;
+                    top: 10rem;
+                    left: 0;
+
+                    height: auto;
+                    background: #fff;
+                    z-index: 999;
+                    width: 100%;
+                    padding-bottom: 10rem;
+
+
+                    .nav_logo {
+                        >strong {
+                            font-size: 3rem;
+                            position: absolute;
+                            top: 4rem;
+                            left: 7rem;
+                            display: block;
+                        }
+
+                    }
+                }
+
+
+            }
+
+
+            .depth-02.active {
+                display: none;
+                width: 100%;
+                position: absolute;
+                top: 10rem;
+                left: 0;
+                padding: 0 0 4rem 0;
+                color: #1a1a1a;
+
+
+            }
+
+
+
+
+            .com_box {
+                display: flex;
+                justify-content: space-between;
+                width: 50%;
+                margin: 0 auto;
+
+
+
+                strong {
+                    padding: 5rem 0 2rem 0;
+                    display: block;
+                }
+
+
+                .depth-03 {
+
+                    line-height: 5rem;
+
+                    li {
+                        a {
+                            display: block;
+
+                            &:hover {
+                                color: #00AAE7;
+                                font-weight: bold;
+                                border-bottom: 0.2rem solid #00AAE7;
+                                padding-bottom: 0.01rem;
+                            }
+                        }
+                    }
+
+
+                }
+
+
+            }
+
+            /* combox */
+
+            .brand {
+                width: 80%;
+                margin: 3rem auto;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding-left: 10rem;
+
+                li {
+
+                    .depth-03 {
+
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: space-between;
+
+                        >li {
+
+
+                            width: 11.8rem;
+                            height: 6rem;
+                            border-radius: 2rem;
+                            text-align: center;
+                            line-height: 6rem;
+                            border: 0.1rem solid #000;
+                            margin: 0 1rem 1rem 0;
+
+
+
+
+                            a {
+                                display: block;
+
+
+
+
+                            }
+
+                            a:hover {
+                                color: #F5f5f5;
+                                background-color: #00AAE7;
+
+                                border-radius: 2rem;
+
+                            }
+                        }
+
+                    }
+                }
+
+                >li {
+
+                    .box {
+                        padding-left: 10rem;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 2rem;
+
+
+
+                        >li {
+
+                            width: 37.5rem;
+                            height: 5.8rem;
+                            background-color: #F5F4EE;
+                            border-radius: 1rem;
+                            line-height: 5.8rem;
+                            padding: 0 3rem;
+
+
+                            a {
+                                display: flex;
+                                justify-content: space-between;
+                                font-size: 1.8rem;
+
+                                img {
+                                    width: 1.6rem;
+                                    display: block;
+                                }
+                            }
+                        }
+
+
+
+                    }
+                }
+
+            }
+
+
+            .sustainability {
+                display: flex;
+                width: 60%;
+                margin: 0 auto;
+                justify-content: space-between;
+                white-space: nowrap;
+
+                >li {
+                    margin-right: 3rem;
+
+                    strong {
+                        padding: 5rem 0 2rem 0;
+                        display: block;
+
+                    }
+
+                    &:nth-child(4) {
+                        color: #A25E00;
+
+
+                    }
+
+
+                    .depth-03 {
+
+                        line-height: 5rem;
+
+                        li {
+
+
+
+                            a {
+                                display: block;
+
+
+
+                                &:hover {
+                                    color: #00AAE7;
+                                    font-weight: bold;
+                                    border-bottom: 0.2rem solid #00AAE7;
+                                    padding-bottom: 0.01rem;
+                                }
+
+
+                            }
+
+
+
+                            color: #000;
+
+
+
+
+                        }
+
+
+                    }
+                }
+
+
+
+                .box {
+                    padding-left: 10rem;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 2rem;
+                    margin-top: 5rem;
+
+
+
+                    >li {
+
+                        width: 37.5rem;
+                        height: 5.8rem;
+                        background-color: #F5F4EE;
+                        border-radius: 1rem;
+                        line-height: 5.8rem;
+                        padding: 0 3rem;
+
+
+                        a {
+                            display: flex;
+                            justify-content: space-between;
+                            font-size: 1.8rem;
+
+                            img {
+                                width: 1.6rem;
+                                display: block;
+                            }
+                        }
+                    }
+
+
+
+                }
+
+            }
+
+
+            .sns {
+                display: flex;
+                width: 50%;
+                margin: 0 auto;
+                justify-content: space-between;
+                margin-top: 5rem;
+
+                >li {
+                    .depth-03 {
+                        margin-top: 2rem;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 2rem;
+
+                        li {
+                            width: 100%;
+                            margin: 0 auto;
+                            text-align: start;
+                            width: 4rem;
+
+                            a {
+                                display: flex;
+                                align-items: center;
+                                gap: 1rem;
+
+                                img {
+                                    width: 100%;
+                                    object-fit: cover;
+
+                                    &::hover {
+
+                                        color: #00AAE7;
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+            .consumers {
+
+                width: 80%;
+                margin: 10rem auto;
+                text-align: center;
+
+                >li {
+                    .depth-03.title {
+                        width: 100%;
+                        text-align: center;
+                        padding: 1rem;
+                        display: flex;
+                        justify-content: space-between;
+                        gap: 5rem;
+
+                        li {
+                            font-weight: bold;
+                        }
+
+
+                    }
+                }
+
+                .call_box {
+                    width: 120.2rem;
+                    height: 19.5rem;
+                    margin: 5rem auto;
+                    background-color: #fdf9f0;
+                    border-radius: 3rem;
+                    margin-top: 4rem;
+                    display: flex;
+
+                    .depth-03 {
+                        display: flex;
+                        flex-direction: column;
+                        flex-wrap: wrap;
+                        width: 100%;
+                        margin: 0 auto;
+                        gap: 2rem;
+                        padding: 3rem 3rem 0 3rem;
+
+                        li {
+                            display: flex;
+                            align-items: center;
+                            gap: 1rem;
+                            color: #6c6b6b;
+                            text-align: left;
+
+
+                            a {
+                                font-size: 2.4rem;
+                                font-weight: bold;
+                                color: #00AAE7;
+                            }
+
+
+
+                        }
+
+
+                    }
+
+
+
+                    &:first-child {
+                        display: flex;
+                    }
+                }
+
+
+
+                .call {
+                    display: flex;
+                    text-align: center;
+                    width: 100%;
+                    justify-content: space-between;
+                    padding: 0 20rem;
+
+                    li {
+                        font-size: 2rem;
+                        display: flex;
+                        gap: 1rem;
+
+                        p {
+                            font-size: 2.4;
+                            font-weight: bold;
+                            color: #00AAE7;
+                            display: block;
+
+                        }
+                    }
+                }
+            }
+
+
+
+
+        }
+
+
+
+
+        .utill {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            padding: 4rem;
+
+            >li {
+                position: relative; // 툴팁 위치 기준
+                width: 10.2rem;
+                height: 3.2rem;
+
+                a img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    cursor: pointer; // 커서 표시
+                }
+
+                // 툴팁
+                ul {
+                    position: absolute;
+                    top: 100%; // 아이콘 바로 아래
+                    left: 30%;
+                    transform: translateX(-50%);
+                    padding-top: 0.5rem;
+                    z-index: 999999;
+
+                    li {
+                        display: none; // 기본 숨김
+                        width: max-content; // 이미지 크기에 맞춤
+
+                        img {
+                            width: 100%;
+                            object-fit: contain;
+                        }
+                    }
+                }
+
+                // 호버하면 툴팁 보이기
+                &:hover ul li {
+                    display: block;
+                }
+            }
+        }
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+}
+
+
+
+/* 메인 */
+
+/* 메인비주얼 */
+
+.main_visual {
+    width: 100%;
+
+    .inner {
+        position: relative;
+
+        img {
+            width: 100%;
+            object-fit: cover;
+            filter: brightness(50%);
+        }
+
+        .text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #F5f5f5;
+            text-align: center;
+
+            h2 {
+                font-size: 10rem;
+                font-weight: bold;
+                margin-bottom: 3.2rem;
+            }
+
+            p {
+                font-size: 2.4rem;
+                line-height: 1.5;
+
+            }
+        }
+
+    }
+
+}
+
+/* 섹션네비 */
+.sec_nav {
+    width: 100%;
+    padding: 15rem 0;
+
+
+    .inner {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        justify-content: center;
+        text-align: left;
+
+        .gnb {
+            display: flex;
+            gap: 5rem;
+            justify-content: center;
+            margin-bottom: 5rem;
+            cursor: pointer;
+
+
+
+
+            .title {
+                font-size: 5rem;
+                color: #1a1a1a;
+                border-bottom: 0.2rem solid #1a1a1a;
+                padding-bottom: 1.8rem;
+
+                &:hover {
+                    border-bottom: 0.2rem solid #1a1a1a;
+                    padding-bottom: 1.8rem;
+                }
+
+            }
+
+            li {
+                font-size: 2.4rem;
+                color: #a3a3a3;
+                line-height: 1rem;
+
+                &:nth-child(1) {
+                    font-size: 5rem;
+                    color: #1a1a1a;
+                    border-bottom: 0.2rem solid #1a1a1a;
+                    padding-bottom: 2rem;
+                }
+
+               
+
+
+            }
+        }
+
+
+        .gnb-02 {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            align-items: center;
+
+            li {
+                width: 20rem;
+                height: 6rem;
+                border: 0.1rem solid #a3a3a3;
+                border-radius: 5rem;
+                font-size: 2rem;
+                text-align: center;
+                padding: 3.7rem 2.1rem;
+                
+                color: #6c6b6b;
+                line-height: 1rem;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #00AAE7;
+                    color: #F5f5f5;
+                }
+
+                &:nth-child(2) {
+                    background-color: #00AAE7;
+                    color: #F5f5f5;
+
+                    &:hover {
+                        background-color: transparent;
+                        color: #6c6b6b;
+                    }
+
+                }
+            }
+
+        }
+    }
+
+}
+
+/* 메인 1 */
+
+.section-01 {
+    // 1. 스크롤 애니메이션을 위한 충분한 높이 확보
+    height: $scroll-height;
+    position: relative;
+    margin-bottom: 50rem;
+
+
+    img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(50%);
+        z-index: 2;
+    }
+
+
+    background-attachment: fixed;
+
+
+
+    #texts-animation {
+
+        width: 100%;
+        height: 100vh; // 뷰포트 높이만큼 표시
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden; // 내용이 고정 영역을 벗어나지 않도록 숨김
+
+        // 텍스트 블록 스타일 (겹쳐 놓기)
+        .bg {
+            position: absolute; // 부모(#texts-animation)를 기준으로 겹침
+            width: $text-width;
+            text-align: center;
+            padding: $text-padding;
+            z-index: 99;
+
+            // GSAP가 제어할 초기 상태 (스크롤이 시작되기 전까지 보일 첫 번째 텍스트)
+            &.one {
+                opacity: 1;
+
+                .section-heading1 {
+                    font-size: clamp(2rem, 5vw, 7rem);
+                    line-height: 1.5;
+                    font-weight: 700;
+                    color: #fff;
+                }
+
+            }
+
+
+            // 두 번째 이후 텍스트는 초기에 숨겨 놓음
+            &:not(.one) {
+                opacity: 0;
+
+                .section-heading2 {
+                    font-size: clamp(2rem, 5vw, 3rem);
+                    line-height: 1.5;
+                    font-weight: 600;
+                    color: #fff;
+                    position: relative; // <span>의 absolute 기준점
+
+                    .view-details {
+                        position: absolute;
+                        top: 120%;
+                        left: 50%;
+                        display: block;
+
+                        transform: translateX(-50%);
+                        margin-left: 0.5rem;
+                        font-size: 2rem;
+                        line-height: 2rem;
+                        align-items: center; // 이미지를 텍스트와 수직 중앙 정렬하기 위해 추가
+                        color: #818181;
+
+                        em {
+                            width: 2rem;
+                            height: 2rem;
+                            position: absolute;
+                            top: 100;
+                            left: 110%;
+                            cursor: pointer;
+
+                            img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                            }
+                        }
+                    }
+                }
+            }
+
+            p {
+                font-size: 2rem;
+                margin-bottom: 5rem;
+                color: #ccc;
+                font-weight: 700;
+                border-bottom: 0.3rem solid #ccc;
+                display: inline-block;
+            }
+
+
+
+
+        }
+
+
+    }
+}
+
+.section-02 {
+    margin-bottom: 50rem;
+
+    .inner {
+        width: 100%;
+        text-align: center;
+
+        .text {
+            margin-top: 30rem;
+
+            p {
+                font-size: 2rem;
+                color: #00AAE7;
+                border-bottom: 0.2rem solid #00AAE7;
+                display: inline-block;
+                font-weight: bold;
+                margin-bottom: 5rem;
+            }
+
+            h3 {
+                font-size: 3rem;
+                color: #1a1a1a;
+                line-height: 1.5;
+                margin-bottom: 2rem;
+                font-weight: 500;
+            }
+
+            span {
+                font-size: 2rem;
+                color: #9b9999;
+
+            }
+        }
+    }
+}
+
+/* 메인3 */
+
+.section-03 {
+    h2 {
+        margin-bottom: 10rem;
+        font-size: 3.5rem;
+
+        span {
+            background-color: #00AAE7;
+            border-radius: 1rem;
+            color: #F5f5f5;
+            font-weight: bold;
+            padding: 2rem;
+
+        }
+    }
+
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 1.4rem;
+    color: #000;
+
+    .spacer {
+        width: 100%;
+        height: 100vh;
+    }
+
+    .card-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 5rem;
+
+        &:nth-of-type(2) {
+            .card-contents {
+                transform: rotate(-30deg);
+            }
+        }
+
+        &:nth-of-type(3) {
+            .card-contents {
+                transform: rotate(30deg);
+            }
+        }
+
+        // 3-1. 카드 내용 컨테이너
+        .card-contents {
+            position: relative;
+            width: 50rem;
+            height: 50rem;
+            background-color: #000;
+            border-radius: 5rem;
+            box-shadow: rgba(0, 0, 0, 0.24) 0 0.3rem 0.8rem;
+            overflow: hidden; // 이미지와 설명을 깔끔하게 담기 위해 추가
+
+
+
+            // 3-2. 이미지 스타일
+            img {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                border-radius: 1.5rem;
+                opacity: 0.8;
+                object-fit: cover;
+                transition: opacity 0.3s ease; // 호버 효과를 위해 추가
+
+                // 호버 시 이미지를 밝게 또는 어둡게
+                .card-wrapper:hover & {
+                    opacity: 1;
+                }
+            }
+
+            // 3-3. 카드 설명/텍스트 스타일
+            .card-description {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: flex;
+
+                z-index: 100;
+                color: white;
+                width: 85%; // 전체 너비를 사용하도록 설정
+
+                h3,
+                p {
+
+
+                    margin: 0;
+                    text-align: left;
+                    margin-left: 2rem;
+                }
+
+                h3 {
+                    font-size: 3em;
+                }
+
+                p {
+                    font-size: 2em;
+                    display: flex;
+                    flex-wrap: wrap;
+                    line-height: 1.5;
+                }
+            }
+
+
+        }
+
+
+    }
+}
+
+/* 메인4 */
+.section-04 {
+    text-align: center;
+    margin-bottom: 50rem;
+
+    h2 {
+        margin-bottom: 10rem;
+        font-size: 3.5rem;
+
+        span {
+            background-color: #00AAE7;
+            border-radius: 1rem;
+            color: #F5f5f5;
+            font-weight: bold;
+            padding: 2rem;
+        }
+    }
+
+
+
+    .list {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30rem;
+        padding: 0 5rem;
+        text-align: center;
+
+        .item {
+            width: 20.7rem;
+            height: 29.8rem;
+            padding: 3rem;
+            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color: #00a9e76e;
+            border-radius: 3rem;
+
+
+            span {
+                font-size: 2rem;
+                font-weight: bold;
+                background-color: #fff;
+                border-radius: 50%;
+                line-height: 5rem;
+                display: inline-block;
+                width: 5rem;
+                height: 5rem;
+                margin: 0 auto;
+
+
+            }
+
+            img {
+                width: 16rem;
+                height: 16rem;
+                object-fit: cover;
+            }
+
+            p {
+                font-size: 2rem;
+            }
+
+            &:hover {
+                background-color: #00AAE7;
+                scale: calc(1.2);
+                transition: all 0.3s ease;
+                cursor: pointer;
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+/* 메인5 */
+
+.section-05 {
+    text-align: center;
+    margin-bottom: 30rem;
+
+    h2 {
+        margin-bottom: 10rem;
+        font-size: 3.5rem;
+
+        span {
+            background-color: #00AAE7;
+            border-radius: 1rem;
+            color: #F5f5f5;
+            font-weight: bold;
+            padding: 2rem;
+        }
+    }
+
+    .list {
+
+
+        .item {
+
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            margin: 20rem auto;
+
+            .image {
+                width: 100rem;
+                order: -1;
+
+                img {
+                    width: 100%;
+
+                    object-fit: cover;
+
+                }
+
+
+            }
+
+            p {
+                font-size: 2.4rem;
+                line-height: 1.8;
+                display: flex;
+                flex-wrap: wrap;
+                text-align: left;
+                margin-left: 15rem;
+                align-items: center;
+            }
+
+            &:nth-child(2) {
+
+                p {
+                    order: 1;
+                    margin-right: 15rem;
+                    margin-left: 0;
+                }
+
+
+                .image {
+                    order: 2;
+                }
+
+
+            }
+
+        }
+
+    }
+}
+
+/* top */
+
+/* 배너,top버튼 */
+.btn {
+    position: fixed;
+    bottom: 3rem;
+    right: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    align-items: center;
+
+    z-index: 999999;
+
+
+
+    .banner {
+        width: 16.9rem;
+        height: 16.9rem;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+
+        }
+
+
+
+    }
+
+    .topbtn.active {
+        display: block;
+
+    }
+
+    .topbtn {
+        width: 8.4rem;
+        height: 8rem;
+        display: none;
+
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            border-radius: 2rem;
+        }
+
+
+
+    }
+}
+
+/*  푸터 */
+
+.footer {
+
+
+    .inner {
+        width: 100%;
+        position: relative;
+
+
+
+        img {
+            width: 100%;
+            object-fit: cover;
+
+        }
+
+        .list {
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: absolute;
+            align-items: center;
+            gap: 2rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            .gnb {
+                font-size: 2.4rem;
+                color: #f5f5f5;
+                font-weight: bold;
+                display: flex;
+
+                gap: 4rem;
+                align-items: center;
+
+
+                li {
+
+
+                    a {}
+
+                    &:first-child {
+                        width: 15.6rem;
+                        height: 3.8rem;
+
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: contain;
+                            display: block;
+
+                        }
+                    }
+
+                    &:hover {
+                        text-decoration: underline;
+                        text-decoration-color: #ffffff;
+                        text-decoration-thickness: 0.3rem;
+                    }
+                }
+
+            }
+
+            .gnb-02 {
+                display: flex;
+                gap: 3rem;
+                justify-content: space-between;
+                font-size: 1.8rem;
+                color: #f5f5f5;
+
+                li {
+                    display: flex;
+
+                }
+
+
+                li:nth-child(4) a {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 0.3rem;
+                    white-space: nowrap;
+                    align-items: center;
+                    line-height: 1.2rem;
+
+                    img {
+                        height: 1.2rem;
+                        object-fit: contain;
+                    }
+                }
+            }
+
+
+            p {
+                font-size: 1.8rem;
+                color: #f5f5f5;
+                display: flex;
+                justify-content: center;
+                line-height: 1.3;
+                text-align: left;
+                padding: 0 17rem;
+
+            }
+        }
+    }
+}

@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>세컨페이지</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+
+    <link rel="stylesheet" href="../css/sub.scss">
+    <link rel="stylesheet" href="../css/sub.css">
+
+    <script src="../lib/jquery-3.7.1.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="../lib/ScrollTrigger.min.js"></script>
+    <script src="../lib/ScrollToPlugin.min.js"></script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+
+
+
+    <script>
+        $(function () {
+            AOS.init();
+            //헤더
+            let header = document.querySelector('.header');
+            let preScrollBar = 0; //이전스크롤바위치
+
+            window.addEventListener('scroll', () => {
+                let scrollBar = window.scrollY; //현재스크롤바위치
+
+                if (scrollBar > preScrollBar) {
+                    header.classList.add('active');
+
+                } else {
+                    header.classList.remove('active');
+                }
+
+                preScrollBar = scrollBar;
+            }); //scroll()
+
+            //메인1
+            const textTimeline = gsap.timeline({
+                scrollTrigger: {
+                    trigger: ".section-01",
+                    start: "top top", // 애니메이션 시작
+                    end: "+=9000", // 스크롤전환속도
+                    scrub: 2,   // 스크롤에 따라 애니메이션 진행
+                    pin: true,     // .section-01 전체를 고정
+                }
+            });
+
+            // 1. 첫 번째 텍스트(.bg.one) 사라지기 (스크롤 시작 후 1000px 동안)
+            textTimeline.to(".bg.one", {
+                opacity: 0,
+                duration: 0.5, // Timeline 내에서의 지속 시간 (스크롤 길이에 상대적)
+                ease: "power1.inOut"
+            })
+
+                // 2. 두 번째 텍스트(.bg:not(.one)) 나타나기
+                // position: "<"는 이전 애니메이션이 끝난 지점부터 시작하도록 설정
+                // position: "-=0.5"는 이전 애니메이션이 끝나기 0.5초 전에 시작하도록 설정 (부드러운 교차)
+                .fromTo(".bg:not(.one)",
+                    { opacity: 0 },
+                    {
+                        opacity: 1,
+                        duration: 0.5,
+                        ease: "power1.inOut"
+                    }, "<0.1"); // 첫 번째 애니메이션이 시작된 직후 바로 시작 (거의 동시)
+
+            //메인4
+            let cards = gsap.utils.toArray(".card-wrapper");
+            let stickDistance = 0;
+            const numCards = cards.length; // 3이 될 것입니다.
+
+            // 첫 번째 카드의 ScrollTrigger는 시작점을 설정
+            let firstCardST = ScrollTrigger.create({
+                trigger: cards[0],
+                start: "center center"
+            });
+
+            // 마지막 카드의 ScrollTrigger는 전체 스태킹의 끝점을 설정
+            let lastCardST = ScrollTrigger.create({
+                trigger: cards[numCards - 1],
+                start: "bottom bottom"
+            });
+
+            // 📢 cards.forEach 루프 안으로 모든 개별 카드 로직을 통합해야 합니다.
+            cards.forEach((card, index) => {
+
+                // 1. 스케일 로직
+                var scale = 1 - (index * 0.025);
+
+                // 2. 📢 rotationY 변수 정의 (루프 안에서)
+                let rotationY = 0;
+
+                // 3. 📢 조건부 로직 (루프 안에서 index 사용)
+                if (index === 1) {
+                    rotationY = -30; // 두 번째 카드 (index 1): 왼쪽으로 기울임
+                } else if (index === 2) {
+                    rotationY = 30;  // 세 번째 카드 (index 2): 오른쪽으로 기울임
+                }
+
+                // 4. GSAP 애니메이션 정의 (scaleDown)
+                let scaleDown = gsap.to(card, {
+                    scale: scale,
+                    rotateY: rotationY, // 계산된 rotationY 적용
+                    ease: "none",
+                    "transform-origin": '50% 50%'
+                });
+
+                // 5. ScrollTrigger 생성
+                ScrollTrigger.create({
+                    trigger: card,
+                    start: "center center",
+                    end: () => lastCardST.start + stickDistance,
+                    pin: true,
+                    pinSpacing: false,
+                    animation: scaleDown,
+                    scrub: true,
+                    toggleActions: "restart none none reverse"
+                });
+            });
+
+
+            //top 버튼
+
+            // 배너 닫기
+            $('.banner').on('click', function () {
+                $(this).fadeOut(500);
+            });
+
+            // 탑 버튼 클릭
+            $('.topbtn').on('click', function () {
+                $('html, body').animate({ scrollTop: 0 }, 1000);
+            });
+
+            //  스크롤 시 top 버튼 표시/숨김
+            $(window).on('scroll', function () {
+                var scrollBar = $(this).scrollTop();
+
+                if (scrollBar > $('.main_visual').offset().top) {
+                    $('.topbtn').addClass('active');
+                } else {
+                    $('.topbtn').removeClass('active');
+                }
+            });
+
+        });//script end
+    </script>
+
+</head>
+
+
+<body>
+
+    <div id="wrap">
+
+        <header class="header">
+            <div class="inner">
+                <h1 class="logo">
+                    <a href="#"><img src="img/logo_scroll.png" alt="logo"></a>
+                </h1><!-- .logo end -->
+
+                <ul class="nav">
+
+                    <!-- 회사소개 -->
+                    <li class="depth-01">
+                        <a href="#">회사소개</a>
+                        <ul class="depth-02">
+                            <li class="nav_logo"><strong>Company</strong></li>
+
+                            <li class="com_box">
+                                <strong>기업소개</strong>
+                                <ul class="depth-03">
+                                    <li><a href="#">CEO인사말</a></li>
+                                    <li><a href="#">개요</a></li>
+                                    <li><a href="#">가치체계</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="com_box">
+                                <strong>사업소개</strong>
+                                <ul class="depth-03">
+                                    <li><a href="#">사업분야</a></li>
+                                    <li><a href="#">사업장</a></li>
+                                    <li><a href="#">재무정보</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="com_box">
+                                <strong>연혁</strong>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- 회사소개 end -->
+
+                    <!-- 브랜드 -->
+                    <li class="depth-01">
+                        <a href="#">브랜드</a>
+                        <ul class="depth-02">
+                            <li class="nav_logo"><strong>Brand</strong></li>
+
+                            <li class="brand">
+                                <ul class="depth-03">
+                                    <li><a href="#">크리넥스</a></li>
+                                    <li><a href="#">하기스</a></li>
+                                    <li><a href="#">좋은느낌</a></li>
+                                    <li><a href="#">디펜드</a></li>
+                                    <li><a href="#">스카트</a></li>
+                                    <li><a href="#">화이트</a></li>
+                                    <li><a href="#">그린핑거</a></li>
+                                    <li><a href="#">Forest</a></li>
+                                    <li><a href="#">마이비데</a></li>
+                                    <li><a href="#">굿나이트</a></li>
+                                    <li><a href="#">뽀삐</a></li>
+                                    <li><a href="#">산업위생용품</a></li>
+                                    <li><a href="#">헬스케어</a></li>
+                                    <li><a href="#">베베그로우</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="brand">
+                                <ul class="box">
+                                    <li><a href="#">지속가능한 제품 <img src="img/right.svg" alt="바로가기아이콘"></a></li>
+                                    <li><a href="#">제조 · 제품 인증 <img src="img/right.svg" alt="바로가기아이콘"></a></li>
+                                    <li><a href="#">직영몰 <img src="img/right.svg" alt="바로가기아이콘"></a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- 브랜드 end -->
+
+                    <!-- 지속가능성 -->
+                    <li class="depth-01">
+                        <a href="#">지속가능성</a>
+                        <ul class="depth-02">
+                            <li class="nav_logo"><strong>Sustainability</strong></li>
+
+                            <li class="sustainability">
+                                <strong>목표와 전략</strong>
+                                <ul class="depth-03">
+                                    <li><a href="#">지속가능성목표</a></li>
+                                    <li><a href="#">윤리 · 준법경영</a></li>
+                                    <li><a href="#">선언 · 지침</a></li>
+                                    <li><a href="#">사회와의 약속</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="sustainability">
+                                <strong>환경</strong>
+                                <ul class="depth-03">
+                                    <li><a href="#">환경경영3.0</a></li>
+                                    <li><a href="#">제품의 환경성</a></li>
+                                    <li><a href="#">기후변화대응</a></li>
+                                    <li><a href="#">자원순환</a></li>
+                                    <li><a href="#">그린액션 얼라이언스</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="sustainability">
+                                <strong>사회</strong>
+                                <ul class="depth-03">
+                                    <li><a href="#">제품안전정책</a></li>
+                                    <li><a href="#">소비자중심경영</a></li>
+                                    <li><a href="#">인권</a></li>
+                                    <li><a href="#">안전보건</a></li>
+                                    <li><a href="#">공급망관리</a></li>
+                                    <li><a href="#">지역사회</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="sustainability">
+                                <strong>사회공헌활동</strong>
+                                <ul class="depth-03">
+                                    <li><a href="#">우리강산 푸르게 푸르게</a></li>
+                                    <li><a href="#">40주년 백서</a></li>
+                                    <li><a href="#">포용과 다양성</a></li>
+                                    <li><a href="#">기부와 나눔</a></li>
+                                    <li><a href="#">그린임팩트</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="sustainability">
+                                <ul class="box">
+                                    <li><a href="#">ESG Data <img src="img/right.svg" alt="바로가기아이콘"></a></li>
+                                    <li><a href="#">지속가능성 보고서 <img src="img/right.svg" alt="바로가기아이콘"></a></li>
+                                    <li><a href="#">우리강산 푸르게 푸르게 <img src="img/right.svg" alt="바로가기아이콘"></a></li>
+                                    <li><a href="#">동반성장 <img src="img/right.svg" alt="바로가기아이콘"></a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- 지속가능성 end -->
+
+                    <!-- 뉴스 -->
+                    <li class="depth-01">
+                        <a href="#">뉴스</a>
+                        <ul class="depth-02">
+                            <li class="nav_logo"><strong>News</strong></li>
+
+                            <li class="sns">
+                                <strong>보도자료</strong>
+                            </li>
+
+                            <li class="sns">
+                                <strong>SNS</strong>
+                                <ul class="depth-03">
+                                    <li><a href="#"><img src="img/Facebook.svg" alt="">facebook</a></li>
+                                    <li><a href="#"><img src="img/Instagram.svg" alt="">instagram</a></li>
+                                    <li><a href="#"><img src="img/naver_blog.svg" alt="">blog</a></li>
+                                    <li><a href="#"><img src="img/youtube.svg" alt="">youtube</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="sns"><strong>공지사항</strong></li>
+                            <li class="sns"><strong>이벤트</strong></li>
+                        </ul>
+                    </li>
+                    <!-- 뉴스 end -->
+
+                    <!-- 고객만족 -->
+                    <li class="depth-01">
+                        <a href="#">고객만족</a>
+                        <ul class="depth-02">
+                            <li class="nav_logo"><strong>Consumers</strong></li>
+
+                            <li class="consumers">
+                                <ul class="depth-03 title">
+                                    <li>응대절차</li>
+                                    <li>FAQ</li>
+                                    <li>문의접수</li>
+                                    <li>소비자교육</li>
+                                    <li>정보형컨텐츠</li>
+                                </ul>
+                            </li>
+
+                            <li class="call_box">
+                                <ul class="depth-03">
+                                    <li>제품관련문의 <a href="#">080-022-7007</a></li>
+                                    <li>[ARS 단축번호] 1.유통기한 문의 2.제품 문의 3.하기스사이즈교환</li>
+                                    <li>회사관련 문의 <a href="#">1566-2074</a></li>
+                                </ul>
+
+                                <ul class="depth-03">
+                                    <li>문자상담 <a href="#">1666-7067</a></li>
+                                    <li>발신자 부담 장문 2,000자 이내 이미지 첨부 문자 (MMS, 이미지 4장까지)</li>
+                                </ul>
+
+                                <ul class="depth-03">
+                                    <li>채팅상담</li>
+                                    <li>일부 상담은 ‘챗봇’을 통해 보다 신속하게 상담 받을 수 있습니다. (24시간, 365일 가능)</li>
+                                    <li>채팅상담 바로가기 <a href="#"><img src="img/right.svg" alt="바로가기아이콘"></a></li>
+                                </ul>
+                            </li>
+
+                            <li class="consumers">
+                                <ul class="call">
+                                    <li>상담가능시간 : 평일 <p>09:00 ~ 17:30</p>
+                                    </li>
+                                    <li>점심시간 : <p>12:00 ~ 13:00</p>
+                                    </li>
+                                    <li>토·일·공휴일 휴무</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- 고객만족 end -->
+
+                    <!-- 채용 -->
+                    <li class="depth-01">
+                        <a href="#">채용</a>
+                    </li>
+
+                </ul>
+
+
+
+                <ul class="utill">
+                    <li>
+                        <a href="#"><img src="img/gangsan.svg" alt="gangsan"></a>
+                        <ul class="tooltip1">
+                            <li><img src="img/tooltop1.png" alt="툴팁1"></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><img src="img/mall.svg" alt="mall"></a>
+                        <ul class="tooltip2">
+                            <li><img src="img/tooltop2.png" alt="툴팁2"></li>
+                        </ul>
+                    </li>
+                </ul><!--utill end  -->
+
+
+            </div><!-- .inner end -->
+        </header><!-- header end -->
+
+        <main class="main">
+
+            <section class="main_visual">
+                <div class="inner">
+                    <img src="img/sub_main.png" alt="메인비주얼이미지">
+                    <div class="text" data-aos="fade-up" data-aos-duration="1500">
+                        <h2>목표와 전략</h2>
+                        <p>유한킴벌리는 지구환경과 사람의 지속가능성에 대해 고민하고,<br />
+                            이를 전략과 목표, 이니셔티브에 반영하여 실천합니다</p>
+                    </div><!-- .text emd -->
+                </div><!-- .inner end -->
+            </section><!-- .main_visual end -->
+
+
+            <section class="sec_nav">
+                <div class="inner">
+                    <ul class="gnb">
+                        <li>목표와 전략</li>
+                        <li>환경</li>
+                        <li>사회</li>
+                        <li>사회 공헌활동</li>
+                    </ul><!-- .gnb end -->
+                    <ul class="gnb-02">
+                        <li>지속가능성목표</li>
+                        <li>윤리 · 준법경영</li>
+                        <li>ESG위원회</li>
+                        <li>선언 · 지침</li>
+                        <li>사회와의 약속</li>
+                    </ul><!-- .gnb-02 -->
+                </div><!-- .inner end -->
+            </section><!-- .sec_nav end -->
+
+
+            <!-- main1 -->
+
+            <section class="section-01">
+                <img src="img/main2.png" alt="main2">
+
+                <div id="texts-animation" class="section-texts-animation">
+                    <div class="bg one">
+                        <p>윤리경영</p>
+                        <h2 class="section-heading1">
+                            윤리경영은 기업의 경쟁력이자,<br />
+                            지속가능 경영의 기반입니다.
+                        </h2>
+                    </div><!-- bg one -->
+
+                    <div class="bg">
+                        <p>윤리경영</p>
+                        <h2 class="section-heading2">
+                            유한킴벌리는 투명성과 공정성을 기반으로 사회적 책임을 다하는 윤리경영 문화를 만들어가고
+                            있습니다. 2007년부터 유엔글로벌콤팩트(UNGC) 회원사로 활동하면서 반부패·인권·노동·환경 등
+                            사회적 책임 이행을 위한 10대 원칙을 지지하고 실천해 왔으며, 2003년부터 CEO가 직접 윤리경영선언에
+                            참여하여 윤리경영에 대한 실천을 선언하고 약속을 이행하고 있습니다. 또한 사단법인 윤경ESG포럼(전
+                            윤경SM포럼) 회원사로서 윤리경영 확산을 위한 노력에 동참하고 있습니다.
+                            <a href="#" class="view-details">
+                                자세히 보기 <em><img src="img/next.svg" alt="바로가기버튼"></em>
+                            </a>
+                        </h2>
+
+                    </div><!-- bg -->
+
+
+                </div><!-- texts-animation end -->
+            </section><!-- section-01 end -->
+
+            <section class="section-02" data-aos="fade-up" data-aos-duration="1500">
+                <div class="inner">
+                    <div class="text">
+                        <p>윤리문화 확산을 위한 실천</p>
+                        <h3>사원들이 자유롭게 의견을 개진하고 문제를 제보할 수 있을 뿐 아니라,<br />그로 인해 피해를 입지 않도록 하는 윤리적 조직 문화를 갖추고자 노력합니다.</h3>
+                        <span>올바른 윤리문화 확산을 위해 보복금지 정책과 윤리문화 실천 원칙을 설정하였으며, 이는 유한킴벌리 전체의 행동규범이기도 합니다.</span>
+                    </div><!-- .text end -->
+                </div><!-- .inner end -->
+            </section><!-- section-02 end -->
+
+
+            <!-- 메인3 -->
+            <section class="section-03">
+                <h2 data-aos="fade-up" data-aos-duration="1500">보복금지 정책의 <span>3가지 약속</span></h2>
+                <div class="card-wrapper">
+                    <div class="card-contents">
+                        <img src="img/main3-1.png" alt="main3-1">
+                        alt="Venice">
+                        <div class="card-description">
+                            <h3>01</h3>
+                            <p>솔직하게 제기한 우려사항을공정하고 객관적으로검토하며,
+                                적절한 시정조치를 취할 것입니다.</p>
+                        </div><!-- card-description end -->
+                    </div><!-- card-contents end -->
+                </div><!-- card-wrapper end -->
+
+                <div class="card-wrapper">
+                    <div class="card-contents">
+                        <img src="img/main3-2.png" alt="main3-2">
+                        alt="Milan">
+                        <div class="card-description">
+                            <h3>02</h3>
+                            <p>우려사항을 제기한 직원들을
+                                보복 행위로부터 보호할 것입니다.</p>
+                        </div><!-- card-description end -->
+                    </div><!-- card-contents end -->
+                </div><!-- card-wrapper end -->
+
+                <div class="card-wrapper">
+                    <div class="card-contents">
+                        <img src="img/main3-3.png" alt="main3-3">
+                        alt="Florence">
+                        <div class="card-description">
+                            <h3>03</h3>
+                            <p>보복행위가 보고되면완전한 조사를 시행하고,
+                                최고 해고를 포함한 시정조치를 시행 할 것입니다.</p>
+                        </div><!-- card-description end -->
+                    </div><!-- card-contents end -->
+                </div><!-- card-wrapper end -->
+
+
+
+                <div class="spacer"></div>
+            </section><!-- .section-03 3nd -->
+
+            <!-- 메인4 -->
+            <section class="section-04">
+                <h2 data-aos="fade-up" data-aos-duration="3000">윤리 문화 <span>6가지 실천원칙</span></h2>
+                <div class="inner">
+                    <div class="list" data-aos="fade-up" data-aos-duration="6000">
+                        <div class="item">
+                            <span>01</span>
+                            <img src="img/main4-1.png" alt="main4-1">
+                            <p>소신하게 말하기</p>
+                        </div><!-- .item end -->
+
+
+                        <div class="item">
+                            <span>02</span>
+                            <img src="img/main4-2.png" alt="main4-2">
+                            <p>보복금지</p>
+                        </div><!-- .item end -->
+
+                        <div class="item">
+                            <span>03</span>
+                            <img src="img/main4-3.png" alt="main4-3">
+                            <p>이해상충 방지</p>
+                        </div><!-- .item end -->
+
+                        <div class="item">
+                            <span>04</span>
+                            <img src="img/main4-4.png" alt="main4-4">
+                            <p>회사기밀 보호</p>
+                        </div><!-- .item end -->
+
+                        <div class="item">
+                            <span>05</span>
+                            <img src="img/main4-5.png" alt="main4-5">
+                            <p>상호 존중</p>
+                        </div><!-- .item end -->
+
+                        <div class="item">
+                            <span>06</span>
+                            <img src="img/main4-6.png" alt="main4-6">
+                            <p>안전에 핵심가치</p>
+                        </div><!-- .item end -->
+
+
+                    </div><!-- .list end -->
+                </div><!-- .inner end   -->
+            </section><!-- .section-04 end -->
+
+
+            <!-- 메인5 -->
+            <section class="section-05">
+                <h2 data-aos="fade-up" data-aos-duration="1500">전담 <span>조직운영</span></h2>
+                <div class="inner">
+                    <div class="list">
+                        <div class="item" data-aos="fade-up" data-aos-duration="3000">
+                            <div class="image">
+                                <img src="img/main5-1.png" alt="main5-1">
+                            </div><!-- .image end -->
+                            <p>유한킴벌리는 일찍이 윤리경영에 대한 중요성을 인식하고,강력한 준법 프로그램을 운영해 왔습니다.CEO 직속 윤리경영 실천 전담조직인 윤리법무본부를운영하고 있으며,
+                                소속 전문 변호사들은 관련부서와 함께 관련 법리를면밀히 검토하고 있습니다. 또한, 분기별로 윤리경영위원회를 개최하며,최고 경영진에게 주요 이슈에 관해 직접
+                                보고하고 있습니다.</p>
+                        </div><!-- .item end -->
+
+
+                        <div class="item" data-aos="fade-up" data-aos-duration="8000">
+                            <div class="image">
+                                <img src="img/main5-2.png" alt="main5-2">
+                            </div><!-- .image end -->
+                            <p>유한킴벌리는 지속적으로 전 임직원을 대상으로 윤리 및 공정거래 교육,
+                                행동규범, 반부패 정책 등에 대한 교육을 꾸준히 실시하고 있으며,2024년 공정거래법 위반으로 인해 제재를 받은 사례가 없었습니다.거래처와의 신규거래 개시
+                                내지 갱신 시에는 비즈니스 역량 뿐만 아니라윤리경영, 인권, 사회책임과 관련한 요소도 함께 고려하고 있습니다.</p>
+                        </div><!-- .item end -->
+
+
+                    </div><!-- .list end -->
+                </div><!-- .inner end -->
+            </section><!-- .section-05 end -->
+        </main><!-- .main end -->
+        <div class="btn">
+            <button type="button" class="banner"><img src="img/banner.png" alt="banner"></button>
+            <button type="button" class="topbtn"><img src="img/top.png" alt="top"></button>
+        </div><!-- .btn end -->
+
+
+
+        <footer class="footer">
+            <div class="inner">
+                <img src="img/Ellipse.svg" alt="배경">
+                <div class="list">
+                    <ul class="gnb">
+                        <li><a href="#"><img src="img/logo_w.svg" alt="로고"></a></li>
+                        <li><a href="#">찾아오시는 길</a></li>
+                        <li><a href="#">개인정보 처리 방침</a></li>
+                        <li><a href="#">글로벌 개인정보보호 정책</a></li>
+                        <li><a href="#">프라이버시 가치</a></li>
+                    </ul><!-- bng end -->
+                    <ul class="gnb-02">
+                        <li><a href="#">대표자 : 이제훈</a></li>
+                        <li><a href="#">주소 : 서울시 송파구 올림픽로 300 롯데월드타워 29층 (우)05551</a></li>
+                        <li><a href="#">사업자번호 : 120-81-11436</a></li>
+                        <li><a href="#"> 회사대표 이메일 <img src="img/Arrow.png" alt="바로가기아이콘"></a></li>
+                        <li><a href="#">제품관련 문의 : 080-022-7007</a></li>
+                        <li><a href="#">회사관련 문의 : 1566-2074</a></li>
+                    </ul><!-- gnb-02 end -->
+                    <p>유한킴벌리 회사 홈페이지, 상품페이지의 이미지, 로고, 배너 등 제작 콘텐츠는 유한킴벌리 또는 그 관계사의 고유한 지식 재산권에 해당하며, 이를 무단 도용시 민형사상의 책임을
+                        물을 수 있습니다.
+                        궁금한 점은 회사 홈페이지 “고객만족”메뉴로 문의 바랍니다.</p>
+                </div><!-- list end -->
+            </div><!-- .inner end -->
+        </footer><!-- footer end -->
+
+
+    </div><!-- #wrap end -->
+
+
+</body>
+
+</html>

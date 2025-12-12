@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>유한킴벌리_반응형리뉴얼</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="css/main.scss">
+    <link rel="stylesheet" href="css/main.css">
+
+
+
+    <script src="lib/jquery-3.7.1.min.js"></script>
+    <script src="lib/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="lib/ScrollTrigger.min.js"></script>
+    <script src="lib/ScrollToPlugin.min.js"></script>
+
+
+
+
+
+    <script>
+        $(function () {
+
+            gsap.registerPlugin(ScrollToPlugin, ScrollTrigger);
+
+
+            AOS.init();
+            ScrollTrigger.refresh();
+
+            //미디어쿼리 메뉴
+            const menuToggle = document.querySelector('.menu-toggle');
+            const nav = document.querySelector('.nav');
+
+            menuToggle.addEventListener('click', () => {
+                nav.classList.toggle('active');
+            });
+
+
+
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: '.main_visual .inner',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: 1,
+                    pin: true,
+                    //markers: true
+                }
+            })
+                .to('.main_visual .inner .text', {
+                    opacity: 1,
+                    ease: 'none',
+                    duration: 10
+                }, 5)
+                .to('.main_visual .inner img', {
+                    scale: 0.4,
+                    opacity: 0.3,
+                    ease: 'none',
+                    duration: 10
+                }, 5)
+
+
+
+
+            //헤더
+
+
+            let header = document.querySelector('.header');
+            let preScrollBar = 0; //이전스크롤바위치
+
+            window.addEventListener('scroll', () => {
+                let scrollBar = window.scrollY; //현재스크롤바위치
+
+                if(scrollBar > preScrollBar) {
+                    header.classList.add('active');
+
+                } else {
+                    header.classList.remove('active');
+                }
+
+                preScrollBar = scrollBar;
+            }); //scroll()
+
+
+
+            // 2. 섹션 이미지 박스
+            gsap.utils.toArray('.img_box').forEach(function (img_box) {
+                //toArray()=>인스턴스를 배열로만드는 매소드이며
+                //forEach()=>배열을 반복문으로 사용하는 매소드
+                gsap.timeline({
+                    scrollTrigger: {
+                        trigger: img_box,
+                        start: '50% 100%',
+                        toggleClass: 'active',
+                        scrub: 1,
+                        // markers: true
+                    }
+                })
+            });
+
+            //section-02 
+
+
+
+            //메인2 스와이퍼
+            var swiper = new Swiper(".mySwiper", {
+                slidesPerView: "auto",       // 여러 슬라이드가 동시에 보이도록
+                spaceBetween: 30,             // 슬라이드 간격
+                loop: 12,                   // 12
+                freeMode: true,               // 마우스/터치 자유 이동
+                autoplay: {
+                    delay: 0,                 // 지연 없이 바로 이동
+                    disableOnInteraction: false,
+                },
+                speed: 6000,                  // 슬라이드 이동 속도
+            });
+
+            //메인3
+
+
+            /* Main navigation */
+            let panelsSection = document.querySelector("#panels"),
+                panelsContainer = document.querySelector("#panels-container"),
+                tween;
+            document.querySelectorAll(".anchor").forEach(anchor => {
+                anchor.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    let targetElem = document.querySelector(e.target.getAttribute("href")),
+                        y = targetElem;
+                    if (targetElem && panelsContainer.isSameNode(targetElem.parentElement)) {
+                        let totalScroll = tween.scrollTrigger.end - tween.scrollTrigger.start,
+                            totalMovement = (panels.length - 1) * targetElem.offsetWidth;
+                        y = Math.round(tween.scrollTrigger.start + (targetElem.offsetLeft / totalMovement) * totalScroll);
+                    }
+                    gsap.to(window, {
+                        scrollTo: {
+                            y: y,
+                            autoKill: false
+                        },
+                        duration: 1
+                    });
+                });
+            });
+
+            /* Panels */
+            const panels = gsap.utils.toArray("#panels-container .panel");
+            tween = gsap.to(panels, {
+                xPercent: -100 * (panels.length - 1),
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#panels-container",
+                    pin: true,
+                    start: "top top",
+                    scrub: 1,
+                    snap: {
+                        snapTo: 1 / (panels.length - 1),
+                        inertia: false,
+                        duration: { min: 0.1, max: 0.1 }
+                    },
+                    end: () => "+=" + (panelsContainer.offsetWidth - innerWidth)
+                }
+            });
+
+            //메인4
+            $(document).ready(function () {
+                $('.menu-item').hover(
+                    function () {
+                        // 마우스 올렸을 때
+                        $(this).stop().animate({ flexGrow: 3 }, 400);
+                        $(this).siblings().stop().animate({ flexGrow: 1 }, 400);
+                    },
+                    function () {
+                        // 마우스가 빠졌을 때 전체 복귀
+                        $('.menu-item').stop().animate({ flexGrow: 1 }, 400);
+                    }
+                );
+            });
+
+
+
+            //top 버튼
+
+            // 배너 닫기
+            $('.banner').on('click', function () {
+                $(this).fadeOut(500);
+            });
+
+            // 탑 버튼 클릭
+            $('.topbtn').on('click', function () {
+                $('html, body').animate({ scrollTop: 0 }, 1000);
+            });
+
+            //  스크롤 시 top 버튼 표시/숨김
+            $(window).on('scroll', function () {
+                var scrollBar = $(this).scrollTop();
+
+                if (scrollBar > $('.main_visual').offset().top) {
+                    $('.topbtn').addClass('active');
+                } else {
+                    $('.topbtn').removeClass('active');
+                }
+            });
+
+            // 초기 로드 시도 스크롤 위치 확인 (페이지가 중간에서 로드될 경우)
+            $(window).trigger('scroll');
+
+            AOS.init({
+                duration: 1000, // 애니메이션 지속 시간
+                once: true,     // 스크롤 시 한 번만 실행
+            });
+
+            //  ScrollTrigger와 AOS의 좌표를 다시 계산 ---
+            setTimeout(() => {
+                AOS.refresh();
+                ScrollTrigger.refresh();
+            }, 1500);
+
+
+
+
+
+        }); // script end
+    </script>
+</head>
+
+<body>
+    <div id="wrap">
+
+
+
+        <header class="header">
+            <div class="inner">
+                <h1 class="logo">
+                    <a href="#"><img src="img/logo_scroll.png" alt="logo"></a>
+                </h1><!-- .logo end -->
+
+
+
+                <button class="menu-toggle">
+                    <img src="img/menu.png" alt="모바일메뉴버튼">
+                </button><!--menu-toggle  -->
+                <ul class="nav">
+
+                    <!-- 회사소개 -->
+                    <li class="depth-01">
+                        <a href="#">회사소개</a>
+                        <ul class="depth-02">
+                            <li class="nav_logo"><strong>Company</strong></li>
+
+                            <ul class="com_box">
+
+                                <li>
+                                    <strong>기업소개</strong>
+                                    <ul class="depth-03">
+                                        <li><a href="#">CEO인사말</a></li>
+                                        <li><a href="#">개요</a></li>
+                                        <li><a href="#">가치체계</a></li>
+                                    </ul><!-- .depth-03 end -->
+                                </li>
+
+                                <li>
+                                    <strong>사업소개</strong>
+                                    <ul class="depth-03">
+                                        <li><a href="#">사업분야</a></li>
+                                        <li><a href="#">사업장</a></li>
+                                        <li><a href="#">재무정보</a></li>
+                                    </ul><!-- .depth-03 end -->
+                                </li>
+
+                                <li><strong>연혁</strong></li>
+                            </ul><!-- .com_box end -->
+                        </ul><!-- depth-02 end -->
+                    </li><!-- .depth-01 end -->
+                    <!-- 회사소개 end -->
+
+
+                    <!-- 브랜드 -->
+                    <li class="depth-01">
+                        <a href="#">브랜드</a>
+                        <ul class="depth-02">
+                            <li class="nav_logo"><strong>Brand</strong></li>
+                            <ul class="brand">
+                                <li>
+                                    <ul class="depth-03">
+                                        <li><a href="#">크리넥스</a></li>
+                                        <li><a href="#">하기스</a></li>
+                                        <li><a href="#">좋은느낌</a></li>
+                                        <li><a href="#">디펜드</a></li>
+                                        <li><a href="#">스카트</a></li>
+                                        <li><a href="#">화이트</a></li>
+                                        <li><a href="#">그린핑거</a></li>
+                                        <li><a href="#">Forest</a></li>
+                                        <li><a href="#">마이비데</a></li>
+                                        <li><a href="#">굿나이트</a></li>
+                                        <li><a href="#">뽀삐</a></li>
+                                        <li><a href="#">산업위생용품</a></li>
+                                        <li><a href="#">헬스케어</a></li>
+                                        <li><a href="#">베베그로우</a></li>
+                                    </ul><!-- .depth-03 end -->
+                                </li>
+
+                                <li>
+                                    <ul class="box">
+                                        <li><a href="#">지속가능한 제품 <img src="img/right.svg" alt="바로가기아이콘"></a></li>
+                                        <li><a href="#">제조 · 제품 인증 <img src="img/right.svg" alt="바로가기아이콘"></a></li>
+                                        <li><a href="#">직영몰 <img src="img/right.svg" alt="바로가기아이콘"></a></li>
+                                    </ul><!-- .box end -->
+                                </li>
+                            </ul><!-- .brand end -->
+                        </ul><!-- depth-02 end -->
+                    </li><!-- .depth-01 end -->
+                    <!-- 브랜드 end -->
+
+
+                    <!-- 지속가능성 -->
+                    <li class="depth-01">
+                        <a href="#">지속가능성</a>
+                        <ul class="depth-02">
+                            <li class="nav_logo"><strong>Sustainability</strong></li>
+
+                            <ul class="sustainability">
+                                <li>
+                                    <strong>목표와 전략</strong>
+                                    <ul class="depth-03">
+                                        <li><a href="#">지속가능성목표</a></li>
+                                        <li><a href="#">윤리 · 준법경영</a></li>
+                                        <li><a href="#">선언 · 지침</a></li>
+                                        <li><a href="#">사회와의 약속</a></li>
+                                    </ul><!-- .depth-03 end -->
+                                </li>
+
+                                <li>
+                                    <strong>환경</strong>
+                                    <ul class="depth-03">
+                                        <li><a href="#">환경경영3.0</a></li>
+                                        <li><a href="#">제품의 환경성</a></li>
+                                        <li><a href="#">기후변화대응</a></li>
+                                        <li><a href="#">자원순환</a></li>
+                                        <li><a href="#">그린액션 얼라이언스</a></li>
+                                    </ul><!-- .depth-03 end -->
+                                </li>
+
+                                <li>
+                                    <strong>사회</strong>
+                                    <ul class="depth-03">
+                                        <li><a href="#">제품안전정책</a></li>
+                                        <li><a href="#">소비자중심경영</a></li>
+                                        <li><a href="#">인권</a></li>
+                                        <li><a href="#">안전보건</a></li>
+                                        <li><a href="#">공급망관리</a></li>
+                                        <li><a href="#">지역사회</a></li>
+                                    </ul><!-- .depth-03 end -->
+                                </li>
+
+                                <li>
+                                    <strong>사회공헌활동</strong>
+                                    <ul class="depth-03">
+                                        <li><a href="#">우리강산 푸르게 푸르게</a></li>
+                                        <li><a href="#">40주년 백서</a></li>
+                                        <li><a href="#">포용과 다양성</a></li>
+                                        <li><a href="#">기부와 나눔</a></li>
+                                        <li><a href="#">그린임팩트</a></li>
+                                    </ul><!-- .depth-03 end -->
+                                </li>
+
+                                <li>
+                                    <ul class="box">
+                                        <li><a href="#">ESG Data<img src="img/right.svg" alt="바로가기아이콘"></a></li>
+                                        <li><a href="#">지속가능성 보고서<img src="img/right.svg" alt="바로가기아이콘"></a></li>
+                                        <li><a href="#">우리강산 푸르게 푸르게<img src="img/right.svg" alt="바로가기아이콘"></a></li>
+                                        <li><a href="#">동반성장<img src="img/right.svg" alt="바로가기아이콘"></a></li>
+                                    </ul>
+                                </li>
+                            </ul><!-- sustainability end -->
+                        </ul><!-- depth-02 end -->
+                    </li><!-- .depth-01 end -->
+                    <!-- 지속가능성 end -->
+
+
+                    <!-- 뉴스 -->
+                    <li class="depth-01">
+                        <a href="#">뉴스</a>
+                        <ul class="depth-02">
+                            <li class="nav_logo"><strong>News</strong></li>
+                            <ul class="sns">
+                                <li><strong>보도자료</strong></li>
+
+                                <li>
+                                    <strong>SNS</strong>
+                                    <ul class="depth-03">
+                                        <li><a href="#"><img src="img/Facebook.svg" alt="">facebook</a></li>
+                                        <li><a href="#"><img src="img/Instagram.svg" alt="">instagram</a></li>
+                                        <li><a href="#"><img src="img/naver_blog.svg" alt="">blog</a></li>
+                                        <li><a href="#"><img src="img/youtube.svg" alt="">youtube</a></li>
+                                    </ul><!-- .depth-03 end -->
+                                </li>
+
+                                <li><strong>공지사항</strong></li>
+                                <li><strong>이벤트</strong></li>
+                            </ul><!-- .sns end -->
+                        </ul><!-- depth-02 end -->
+                    </li><!-- .depth-01 end -->
+                    <!-- 뉴스 end -->
+
+
+                    <!-- 고객만족 -->
+                    <li class="depth-01">
+                        <a href="#">고객만족</a>
+                        <ul class="depth-02">
+                            <li class="nav_logo"><strong>Consumers</strong></li>
+
+
+                            <ul class="consumers">
+                                <li>
+                                    <ul class="depth-03 title">
+                                        <li>응대절차</li>
+                                        <li>FAQ</li>
+                                        <li>문의접수</li>
+                                        <li>소비자교육</li>
+                                        <li>정보형컨텐츠</li>
+                                    </ul><!-- .depth-03 end -->
+                                </li>
+
+                                <li class="call_box">
+                                    <ul class="depth-03">
+                                        <li>제품관련문의 <a href="#">080-022-7007</a></li>
+                                        <li>[ARS 단축번호] 1.유통기한 문의 2.제품 문의 3.하기스사이즈교환</li>
+                                        <li>회사관련 문의 <a href="#">1566-2074</a></li>
+                                    </ul><!-- depth-03 end -->
+
+                                    <ul class="depth-03">
+                                        <li>문자상담 <a href="#">1666-7067</a></li>
+                                        <li>발신자 부담 장문 2,000자 이내 이미지 첨부 문자 (MMS, 이미지 4장까지)</li>
+                                    </ul>
+
+                                    <ul class="depth-03">
+                                        <li>채팅상담</li>
+                                        <li>일부 상담은 ‘챗봇’을 통해 보다 신속하게 상담 받을 수 있습니다. (24시간, 365일 가능)</li>
+                                        <li>채팅상담 바로가기 <a href="#"><img src="img/right.svg" alt="바로가기아이콘"></a></li>
+                                    </ul>
+                                </li><!-- .call_box end -->
+
+                                <li>
+                                    <ul class="call">
+                                        <li>상담가능시간 : 평일 <p>09:00 ~ 17:30</p>
+                                        </li>
+                                        <li>점심시간 : <p>12:00 ~ 13:00</p>
+                                        </li>
+                                        <li>토·일·공휴일 휴무</li>
+                                    </ul><!-- .call end -->
+                                </li>
+
+                            </ul><!-- .consumers end -->
+                        </ul><!-- depth-02 end -->
+                    </li><!-- .depth-01 end -->
+                    <!-- 고객만족 end -->
+
+
+                    <!-- 채용 -->
+                    <li class="depth-01">
+                        <a href="#">채용</a>
+                    </li><!-- .depth-01 end -->
+
+
+
+                </ul><!-- .nav end -->
+
+
+                <ul class="utill">
+                    <li>
+                        <a href="#"><img src="img/gangsan.svg" alt="gangsan"></a>
+                        <ul class="tooltip1">
+                            <li><img src="img/tooltop1.png" alt="툴팁1"></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><img src="img/mall.svg" alt="mall"></a>
+                        <ul class="tooltip2">
+                            <li><img src="img/tooltop2.png" alt="툴팁2"></li>
+                        </ul>
+                    </li>
+                </ul><!--utill end  -->
+
+
+            </div><!-- .inner end -->
+        </header><!-- header end -->
+
+        <main class="main">
+            <section class="main_visual">
+                <div class="inner">
+                    <img src="img/main_visual.jpg" alt="main_visual">
+                    <div class="text">
+                        <h2 data-aos="fade-up" data-aos-duration="1500"><span>Better Care for a Better World</span>We
+                            Act Life-health-planet</h2>
+                        <p>우리는 생활-건강-지구환경을 위해 행동합니다</p>
+                    </div><!-- .text end -->
+                </div><!-- .inner end -->
+
+            </section><!-- .main_visual end -->
+
+            <section class="section-01" data-aos="fade-up" data-aos-duration="1500">
+                <div class="inner">
+                    <div class="text size">
+                        <h2 data-aos="fade-up"><span>2030 지속 가능성 목표 달성</span>을 위해 노력하고 있습니다.</h2>
+                    </div><!-- .text end -->
+
+                    <div class="concept">
+
+
+                        <ul class="size">
+                            <li class="img_box">
+
+                                <p>제품
+                                    <img src="img/main2-1.png" alt="선물">
+                                </p>
+                                <p>95 <span>%</span></p>
+                                <span>지속가능제품 매출 비중
+                                    환경성 및 사회성 측면 반영</span>
+                            </li>
+                            <li class="img_box">
+                                <p>숲<img src="img/main2-2.png" alt="나무"></p>
+                                <p>6,000 <span>만그루</span></p>
+                                <span>‘우리강산 푸르게 푸르게’
+                                    나무 심고 가꾸기</span>
+                            </li>
+                            <li class="img_box">
+                                <p>사람<img src="img/main2-3.png" alt="사람"></p>
+                                <p>5600 <span>만명</span></p>
+                                <span>삶의 질 개선
+                                    수혜자 및 참여자</span>
+                            </li>
+                        </ul><!-- .size end -->
+
+                    </div><!-- .concept end -->
+                </div><!-- .inner end -->
+            </section><!-- section-01 end -->
+
+
+
+
+            <section class="section-02">
+
+
+
+
+                <div class="text">
+                    <h3 data-aos="fade-up" data-aos-duration="1500">유한킴벌리의 <span>브랜드</span>를 소개합니다.</h3>
+                </div><!-- .text end -->
+
+
+                <!-- Swiper -->
+                <div class="swiper mySwiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="item">
+                                <div class="image"><img src="img/main3-1-1.png" alt="브랜드"></div>
+                                <p>크리넥스 <span>깨끗함의 진심</span></p>
+                            </div><!-- item end -->
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="item">
+                                <div class="image"><img src="img/main3-2-2.png" alt="브랜드"></div>
+                                <p>하기스 <span>행복한 우리 아기를 위해</span></p>
+                            </div><!-- item end -->
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="item">
+                                <div class="image"><img src="img/main3-3-3.png" alt="브랜드"></div>
+                                <p>좋은느낌 <span>마음까지 편안해서</span></p>
+                            </div><!-- item end -->
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="item">
+                                <div class="image"><img src="img/main3-4-4.png" alt="브랜드" width="588" height="447">
+                                </div>
+                                <p>디펜드 <span>No.1 어메이징케어</span></p>
+                            </div><!-- item end -->
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="item">
+                                <div class="image"><img src="img/main3-5-5.png" alt="브랜드"></div>
+                                <p>스카트 <span>스마트한 집안관리 노하우</span></p>
+                            </div><!-- item end -->
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="item">
+                                <div class="image"><img src="img/main3-6-6.png" alt="브랜드"></div>
+                                <p>화이트 <span>산뜻하고 깨끗하게</span></p>
+                            </div><!-- item end -->
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="item">
+                                <div class="image"><img src="img/main3-7-7.png" alt="브랜드"></div>
+                                <p>그린핑거 <span>자연의 진심을 담아</span></p>
+                            </div><!-- item end -->
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="item">
+
+                                <div class="image"><img src="img/main3-8-8.png" alt="브랜드"></div>
+                                <p>베베그로우 <span>맞춤형 성장케어의 시작</span></p>
+                            </div><!-- item end -->
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="item">
+                                <div class="image"><img src="img/main3-9-9.png" alt="브랜드"></div>
+                                <p>마이비데 <span>더 깨끗한 마무리!</span></p>
+                            </div><!-- item end -->
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="item">
+                                <div class="image"><img src="img/main3-10-10.png" alt="브랜드"></div>
+                                <p>굿나이트 <span>걱정없이 아침까지 편안하게</span></p>
+                            </div><!-- item end -->
+                        </div>
+                    </div><!-- swiper-wrapper -->
+                    <div class="swiper-pagination"></div>
+                </div><!--swiper mySwiper  -->
+
+                <div class="tip_box" data-aos="fade-up" data-aos-duration="1500">
+                    <a href="#" class="live"><img src="img/main3-live.png" alt="맘큐라이브"></a>
+                    <div class="tooltip">
+                        <a href="#" class="tip1"><img src="img/main3-mom.svg" alt="맘큐">
+                            <span>
+                                믿고 주문하는<br />
+                                유한킴벌리 직영 쇼핑앱 맘큐
+                            </span></a>
+                        <a href="#" class="tip2"><img src="img/main3-dal.svg" alt="달다방">
+                            <span>
+                                건강한 삶을 위한 선택<br />
+                                여성 건강관리 플랫폼 달다방
+                            </span></a>
+                    </div><!-- .tooltip end -->
+                </div><!-- .tip_box end -->
+
+            </section><!-- section-02 -->
+
+
+
+            <section class="section-03">
+
+                <div class="inner">
+                    <div class="title">
+                        <h3 data-aos="fade-up" data-aos-duration="1500">유한킴벌리의 <span>뉴스</span>를 한 눈에 확인하세요. <img
+                                src="img/Arrow.png" alt="바로가기">
+                        </h3>
+                    </div><!-- .title end -->
+                    <!-- Swiper -->
+                    <div id="panels">
+
+                        <div id="panels-container" style="width: 300%;">
+                            <article id="panel-1" class="panel full-screen">
+                                <div class="container" data-aos="fade-up" data-aos-duration="1500">
+
+                                    <div class="text">
+                                        <p>여성용품 대표 기업 유한킴벌리(대표이사 사장 이제훈)가 더마 생리대‘좋은느낌 센서티브스킨’을 출시했다.
+                                            좋은느낌 담당자는 “여성용품 1위 7) 브랜드의 역량에 걸맞도록
+                                            성분부터 착용감까지 디테일한 연구 개발 끝에 신제품을 선보인다”며, “Y존 피부 케어가 중요하게 대두되는 추세와 맞물려, 여성들로부터
+                                            널리 사랑받을 것으로 기대한다”고 출시 소감을 밝혔다.
+                                            <a href="#">자세히보기<img src="img/mian3.png" alt="바로가기아이콘"></a>
+                                        </p>
+
+                                        <div class="news_title">
+                                            <span>01 <a href="#">2025-10-27</a></span>
+
+                                            <p>Y존 피부 케어 더마 생리대
+                                                ‘좋은느낌 센서티브스킨’ 출시</p>
+                                        </div> <!-- news_title end -->
+
+
+                                    </div><!-- text end -->
+
+                                    <img src="img/main4-1.png" alt="뉴스1">
+
+
+                                </div><!-- container end -->
+                            </article><!-- panel-1 end -->
+
+
+                            <article id="panel-2" class="panel full-screen">
+                                <div class="container">
+
+                                    <div class="text">
+                                        <p>여유한킴벌리는 건강한 의료 환경 조성에 기여하기 위해 ‘슬기로운 의료생활 캠페인’을 전개한다고 밝혔다. 해당 캠페인은 유한킴벌리 헬스케어
+                                            전문 브랜드 ‘힐더스’가 주도한다.
+                                            슬기로운 의료생활 캠페인은 다양한 방식으로 진행된다. 감염관리와 안전한 의료 환경에 도움이 되는 솔루션 공급을 확장하는 한편, 의료진의
+                                            건강을 돕는 실천형 콘텐츠도 기획하고
+                                            있으며, 더 나아가, 캠페인의 영향력이 확장될 수 있도록 다양한 의료기관과의 협업도 추진할 예정이다.
+
+
+                                            <a href="#">자세히보기<img src="img/mian3.png" alt="바로가기아이콘"></a>
+                                        </p>
+
+                                        <div class="news_title">
+                                            <span>02 <a href="#">2025-10-30</a></span>
+
+                                            <p>유한킴벌리 ‘힐더스’, 슬기로운 의료생활 캠페인 런칭</p>
+                                        </div> <!-- news_title end -->
+
+
+                                    </div><!-- text end -->
+
+                                    <img src="img/main4-2.png" alt="뉴스2">
+                                </div><!-- container -->
+                            </article>
+                            <article id="panel-3" class="panel full-screen purple">
+                                <div class="container">
+                                    <div class="text">
+                                        <p>여유한킴벌리는 일가족 균형과 저출생 극복을 주제로 서울YWCA와 공동 연구를 수행했다고 밝혔다.
+                                            유자녀 부부들은 아이가 생기며 얻은 삶이 긍정적으로 변화하고, 함께 육아를 공부하고 협력하는 과정에서 부부관계를 비롯한 가족관계가 더욱
+                                            돈독해졌다는 경험을 전했다. 특히, 육아를 전담하거나 적극 참여하는 아빠가 증가하는 등 육아에 대한 인식 변화 양상도 눈에 띄었다.
+
+
+                                            <a href="#">자세히보기<img src="img/mian3.png" alt="바로가기아이콘"></a>
+                                        </p>
+
+                                        <div class="news_title">
+                                            <span>03 <a href="#">2025-10-31</a></span>
+
+                                            <p>유한킴벌리-서울YWCA, 저출생 해법 모색 공동 연구,토론회 개최</p>
+                                        </div> <!-- news_title end -->
+
+
+                                    </div><!-- text end -->
+
+                                    <img src="img/main4-3.png" alt="뉴스3">
+                                </div><!-- container -->
+                            </article>
+
+
+                        </div>
+                    </div>
+
+
+
+
+                </div><!-- .inner end -->
+            </section><!-- .section-03 -->
+
+            <section class="section-04">
+                <div class="inner" data-aos="fade-up" data-aos-duration="1500">
+                    <div class="title">
+                        <h3>유한킴벌리는 <span>지속가능한
+                                미래</span>를 위해 노력합니다.<img src="img/Arrow2.png" alt="바로가기">
+                        </h3>
+                    </div><!-- .title end -->
+
+                    <div class="menu-wrap">
+                        <div class="menu-item">
+                            <img src="img/main5-1.png" alt="목표">
+                            <div class="content">
+                                <a href="#">목표와전략<img src="img/mian3.png" alt="바로가기아이콘"></a>
+                                <p>지구환경과 사람의 지속가능성에 대해 고민하고,
+                                    이를 전략과 목표, 이니셔티브에 반영하여 실천합니다.</p>
+                            </div><!-- menu-item -->
+                        </div><!--menu-item end  -->
+
+                        <div class="menu-item">
+                            <img src="img/mian5-2.png" alt="환경">
+                            <div class="content">
+                                <a href="#">환경<img src="img/mian3.png" alt="바로가기아이콘"></a>
+                                <p>기후위기 대응을 위한 전 지구적 노력에 동참합니다.</p>
+                            </div><!-- content -->
+                        </div><!-- menu-item -->
+
+                        <div class="menu-item">
+                            <img src="img/main5-3.png" alt="사회">
+                            <div class="content">
+                                <a href="#">사회<img src="img/mian3.png" alt="바로가기아이콘"></a>
+                                <p>사회와 함께하는 가치있는 성장을 추구합니다.</p>
+                            </div><!-- content end -->
+                        </div><!--menu-item end  -->
+
+                        <div class="menu-item">
+                            <img src="img/main5-4.png" alt="사회공헌활동">
+                            <div class="content">
+                                <a href="#">사회공헌활동<img src="img/mian3.png" alt="바로가기아이콘"></a>
+                                <p>숲을매개로, 사회 문제 해결을 위해 지역 사회와 함께 합니다.</p>
+
+                            </div><!--content end  -->
+                        </div><!--menu-item end  -->
+                    </div><!-- menu-wrap end-->
+
+
+
+
+
+
+                </div><!-- .inner end -->
+
+
+
+            </section><!-- section-04 end -->
+
+
+
+
+
+        </main><!-- .main end -->
+
+        <div class="btn">
+            <button type="button" class="banner"><img src="img/banner.png" alt="banner"></button>
+            <button type="button" class="topbtn"><img src="img/top.png" alt="top"></button>
+        </div><!-- .btn end -->
+
+        <section class="section-05">
+            <div class="inner">
+                <ul class="sns" data-aos="fade-up">
+                    <li><a href="#"><img src="img/Instagram.png" alt="인스타"></a></li>
+                    <li><a href="#"><img src="img/Facebook.png" alt="페이스북"></a></li>
+                    <li><a href="#"><img src="img/naverblog.png" alt="블로그"></a></li>
+                    <li><a href="#"><img src="img/youtube.png" alt="유튜브"></a></li>
+                </ul><!-- sns end -->
+            </div><!-- .inner end -->
+        </section><!-- .section-05 end -->
+
+
+        <footer class="footer">
+            <div class="inner">
+                <img src="img/Ellipse.svg" alt="배경">
+                <div class="list">
+                    <ul class="gnb">
+                        <li><a href="#"><img src="img/logo_w.svg" alt="로고"></a></li>
+                        <li><a href="#">찾아오시는 길</a></li>
+                        <li><a href="#">개인정보 처리 방침</a></li>
+                        <li><a href="#">글로벌 개인정보보호 정책</a></li>
+                        <li><a href="#">프라이버시 가치</a></li>
+                    </ul><!-- bng end -->
+                    <ul class="gnb-02">
+                        <li><a href="#">대표자 : 이제훈</a></li>
+                        <li><a href="#">주소 : 서울시 송파구 올림픽로 300 롯데월드타워 29층 (우)05551</a></li>
+                        <li><a href="#">사업자번호 : 120-81-11436</a></li>
+                        <li><a href="#"> 회사대표 이메일 <img src="img/Arrow.png" alt="바로가기아이콘"></a></li>
+                        <li><a href="#">제품관련 문의 : 080-022-7007</a></li>
+                        <li><a href="#">회사관련 문의 : 1566-2074</a></li>
+                    </ul><!-- gnb-02 end -->
+                    <p>유한킴벌리 회사 홈페이지, 상품페이지의 이미지, 로고, 배너 등 제작 콘텐츠는 유한킴벌리 또는 그 관계사의 고유한 지식 재산권에 해당하며, 이를 무단 도용시 민형사상의 책임을
+                        물을 수 있습니다.
+                        궁금한 점은 회사 홈페이지 “고객만족”메뉴로 문의 바랍니다.</p>
+                </div><!-- list end -->
+            </div><!-- .inner end -->
+        </footer><!-- footer end -->
+
+
+    </div><!-- #wrap end -->
+
+</body>
+
+</html>
