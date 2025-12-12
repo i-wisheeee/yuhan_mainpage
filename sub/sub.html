@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>세컨페이지</title>
+    <title>서브페이지</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
 
     <link rel="stylesheet" href="../css/sub.scss">
@@ -23,7 +23,9 @@
 
     <script>
         $(function () {
+
             AOS.init();
+
             //헤더
             let header = document.querySelector('.header');
             let preScrollBar = 0; //이전스크롤바위치
@@ -46,9 +48,9 @@
                 scrollTrigger: {
                     trigger: ".section-01",
                     start: "top top", // 애니메이션 시작
-                    end: "+=9000", // 스크롤전환속도
-                    scrub: 2,   // 스크롤에 따라 애니메이션 진행
-                    pin: true,     // .section-01 전체를 고정
+                    end: "+=3000", // 스크롤전환속도
+                    scrub: 2, // 스크롤에 따라 애니메이션 진행
+                    pin: true, // .section-01 전체를 고정
                 }
             });
 
@@ -73,7 +75,7 @@
             //메인4
             let cards = gsap.utils.toArray(".card-wrapper");
             let stickDistance = 0;
-            const numCards = cards.length; // 3이 될 것입니다.
+            const numCards = cards.length; // 3
 
             // 첫 번째 카드의 ScrollTrigger는 시작점을 설정
             let firstCardST = ScrollTrigger.create({
@@ -87,20 +89,20 @@
                 start: "bottom bottom"
             });
 
-            // 📢 cards.forEach 루프 안으로 모든 개별 카드 로직을 통합해야 합니다.
+            //  cards.forEach 루프 안으로 모든 개별 카드 로직을 통합
             cards.forEach((card, index) => {
 
                 // 1. 스케일 로직
                 var scale = 1 - (index * 0.025);
 
-                // 2. 📢 rotationY 변수 정의 (루프 안에서)
+                // 2.  rotationY 변수 정의 (루프 안에서)
                 let rotationY = 0;
 
-                // 3. 📢 조건부 로직 (루프 안에서 index 사용)
+                // 3.  조건부 로직 (루프 안에서 index 사용)
                 if (index === 1) {
                     rotationY = -30; // 두 번째 카드 (index 1): 왼쪽으로 기울임
                 } else if (index === 2) {
-                    rotationY = 30;  // 세 번째 카드 (index 2): 오른쪽으로 기울임
+                    rotationY = 30; // 세 번째 카드 (index 2): 오른쪽으로 기울임
                 }
 
                 // 4. GSAP 애니메이션 정의 (scaleDown)
@@ -137,7 +139,7 @@
                 $('html, body').animate({ scrollTop: 0 }, 1000);
             });
 
-            //  스크롤 시 top 버튼 표시/숨김
+            //  스크롤 시 top 버튼 표시/숨김
             $(window).on('scroll', function () {
                 var scrollBar = $(this).scrollTop();
 
@@ -148,11 +150,27 @@
                 }
             });
 
+
+            $(window).trigger('scroll');
+
+            AOS.init({
+                duration: 1000, // 애니메이션 지속 시간
+                once: true,     // 스크롤 시 한 번만 실행
+            });
+
+            //  ScrollTrigger와 AOS의 좌표를 다시 계산 ---
+            setTimeout(() => {
+                AOS.refresh();
+                ScrollTrigger.refresh();
+            }, 1500);
+
+
+
+
         });//script end
     </script>
 
 </head>
-
 
 <body>
 

@@ -554,15 +554,16 @@ html {
   font-size: 2rem;
   line-height: 2rem;
   align-items: center;
-  color: #818181;
+  color: #fff;
 }
 .section-01 #texts-animation .bg:not(.one) .section-heading2 .view-details em {
   width: 2rem;
   height: 2rem;
   position: absolute;
-  top: 100;
+  top: 5%;
   left: 110%;
   cursor: pointer;
+  filter: brightness(195%);
 }
 .section-01 #texts-animation .bg:not(.one) .section-heading2 .view-details em img {
   width: 100%;
@@ -577,6 +578,7 @@ html {
   font-weight: 700;
   border-bottom: 0.3rem solid #ccc;
   display: inline-block;
+  padding-bottom: 0.5rem;
 }
 
 .section-02 {
@@ -592,21 +594,21 @@ html {
 .section-02 .inner .text p {
   font-size: 2rem;
   color: #00AAE7;
-  border-bottom: 0.2rem solid #00AAE7;
+  border-bottom: 0.3rem solid #00AAE7;
   display: inline-block;
-  font-weight: bold;
-  margin-bottom: 5rem;
+  font-weight: 700;
+  padding-bottom: 0.5rem;
 }
 .section-02 .inner .text h3 {
   font-size: 3rem;
   color: #1a1a1a;
   line-height: 1.5;
-  margin-bottom: 2rem;
-  font-weight: 500;
+  margin: 5rem 0 2rem;
+  font-weight: 600;
 }
 .section-02 .inner .text span {
   font-size: 2rem;
-  color: #9b9999;
+  color: #858585;
 }
 
 /* 메인3 */
@@ -640,6 +642,8 @@ html {
   justify-content: center;
   align-items: center;
   margin-top: 5rem;
+  transform-style: preserve-3d;
+  perspective: 100rem;
 }
 .section-03 .card-wrapper:nth-of-type(2) .card-contents {
   transform: rotate(-30deg);
@@ -701,7 +705,7 @@ html {
   margin-bottom: 50rem;
 }
 .section-04 h2 {
-  margin-bottom: 10rem;
+  margin-bottom: 20rem;
   font-size: 3.5rem;
 }
 .section-04 h2 span {
